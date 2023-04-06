@@ -1,4 +1,6 @@
 class PortfoliosController < ApplicationController
+  before_action :set_portfolio, only: %i[ edit update ]
+
   def index
     @portfolios = Portfolio.all
   end 
@@ -15,6 +17,20 @@ class PortfoliosController < ApplicationController
         format.html { redirect_to portfolios_path, notice: "Portfolio was successfully created." }
       else
         format.html { render :new, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def edit
+    @portfolio = set_portfolio
+  end
+
+  def update
+    respond_to do |format|
+      if @portfolio.update(portfolio_params)
+        format.html { redirect_to portfolios_path, notice: "Portfolio was successfully updated." }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
       end
     end
   end
